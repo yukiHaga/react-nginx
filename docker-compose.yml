@@ -8,5 +8,18 @@ services:
     volumes:
       - ./:/app
       - node-volumes:/app/node_modules
+  nginx:
+    image: nginx
+    tty: true
+    ports:
+      - "8080:80"
+    volumes:
+    # www配下にWebサーバーから配信したいファイル群を置く
+    # buildディレクトリの中身を内容をwww配下に置いた
+      - ./build:/var/www/
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    # depends_on: appを指定する事でnginxがappの後に立ち上がります。
+    depends_on:
+      - app
 volumes:
   node-volumes:
